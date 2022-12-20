@@ -41,6 +41,7 @@ class RegularKMeans:
             new_labels, self.inertia_ = self._assignment(X, centroids)
             new_centroids = self._refinement(X, new_labels)
             # print('Centroids:', new_centroids, centroids)
+            # centroid_diff = np.linalg.norm(centroids - new_centroids)
             centroid_diff = np.abs(centroids - new_centroids)
             if np.sum(centroid_diff > self.tol) == 0: 
                 centroids = new_centroids
@@ -120,7 +121,7 @@ class RegularKMeans:
         all_distances = np.array(all_distances)
         assignments = np.argmin(all_distances, axis=0)
 
-        min_vals = np.amin(all_distances, axis=0)
+        min_vals = np.amin(all_distances, axis=0)**2
         inertia = 0 
         for assignment in np.unique(assignments):
             inertia += np.sum(min_vals[assignments == assignment])
